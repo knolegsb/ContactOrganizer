@@ -20,6 +20,8 @@ namespace ContactOrganizer.Entities
         public byte[] ImageData { get; set; }
         public string ImagePath { get; set; }
 
+        //public virtual Person Person { get; set; }
+
         //public List<string> ImageList { get; set; }
 
         //public HttpPostedFileBase File { get; set; }

@@ -1,0 +1,80 @@
+﻿@model ContactOrganizer.Entities.PersonInfo
+
+@{
+    ViewBag.Title = "DisplayPerson";
+}
+
+<h2>DisplayPerson</h2>
+
+<div class="dataElem">
+    @Html.Label("PersonId")
+    @Html.Display("PersonId")
+</div>
+<div class="dataElem">
+    @Html.Label("FirstName")
+    @Html.Display("FirstName")
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.LastName)
+    @Html.DisplayFor(m => m.LastName)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.BirthDate)
+    @Html.DisplayFor(m => m.BirthDate)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.DateAdded)
+    @Html.DisplayFor(m => m.DateAdded)
+</div>
+
+
+<div class="dataElem">
+    @Html.LabelFor(m => m.HomeAddress.Line1)
+    @Html.DisplayFor(m => m.HomeAddress.Line1)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.HomeAddress.Line2)
+    @Html.DisplayFor(m => m.HomeAddress.Line2)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.HomeAddress.City)
+    @Html.DisplayFor(m => m.HomeAddress.City)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.HomeAddress.State)
+    @Html.DisplayFor(m => m.HomeAddress.State)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.HomeAddress.PostalCode)
+    @Html.DisplayFor(m => m.HomeAddress.PostalCode)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.HomeAddress.Country)
+    @Html.DisplayFor(m => m.HomeAddress.Country)
+</div>
+
+
+<div class="dataElem">
+    @Html.LabelFor(m => m.ProfileImage.Title)
+    @Html.DisplayFor(m => m.ProfileImage.Title)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.ProfileImage.FileName)
+    @Html.DisplayFor(m => m.ProfileImage.FileName)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.ProfileImage.Description)
+    @Html.DisplayFor(m => m.ProfileImage.Description)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.ProfileImage.ImageType)
+    @Html.DisplayFor(m => m.ProfileImage.ImageType)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.ProfileImage.ImageData)
+    @Html.DisplayFor(m => m.ProfileImage.ImageData)
+</div>
+<div class="dataElem">
+    @Html.LabelFor(m => m.ProfileImage.ImagePath)
+    @Html.DisplayFor(m => m.ProfileImage.ImagePath)
+</div>

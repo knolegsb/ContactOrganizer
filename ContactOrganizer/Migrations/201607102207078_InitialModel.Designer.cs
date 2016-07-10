@@ -13,7 +13,7 @@ namespace ContactOrganizer.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201607100544434_InitialModel"; }
+            get { return "201607102207078_InitialModel"; }
         }
         
         string IMigrationMetadata.Source

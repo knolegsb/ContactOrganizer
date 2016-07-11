@@ -3,15 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ContactOrganizer.Entities
+namespace ContactOrganizer.Models
 {
-    public class Image
+    public class ImageViewModel
     {
-        //public Image()
-        //{
-        //    ImageList = new List<string>();
-        //}
-
         public int ImageID { get; set; }
         public string Title { get; set; }
         public string FileName { get; set; }
@@ -19,13 +14,5 @@ namespace ContactOrganizer.Entities
         public string ImageType { get; set; }
         public byte[] ImageData { get; set; }
         public string ImagePath { get; set; }
-
-        public FileType FileType { get; set; }
-
-        //public virtual Person Person { get; set; }
-
-        //public List<string> ImageList { get; set; }
-
-        //public HttpPostedFileBase File { get; set; }
     }
 }

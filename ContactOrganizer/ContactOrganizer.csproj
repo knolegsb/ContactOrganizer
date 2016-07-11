@@ -167,6 +167,7 @@
     <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="Concrete\ImageRepository.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -176,6 +177,7 @@
     <Compile Include="DAL\ContactDbContext.cs" />
     <Compile Include="DAL\ContactDbInitializer.cs" />
     <Compile Include="Entities\Address.cs" />
+    <Compile Include="Entities\FileType.cs" />
     <Compile Include="Entities\Image.cs" />
     <Compile Include="Entities\Person.cs" />
     <Compile Include="Entities\PersonInfo.cs" />
@@ -189,6 +191,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\ImageViewModel.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PersonInfoViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

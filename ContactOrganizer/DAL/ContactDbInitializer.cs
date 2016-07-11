@@ -17,12 +17,12 @@ namespace ContactOrganizer.DAL
                 new Person {PersonID =1, FirstName = "Sean", LastName = "John", BirthDate = DateTime.Parse("1990-03-01"), DateAdded = DateTime.Now, Interests = "Sports" }
             };
 
-            persons.ForEach(p => context.People.Add(p));
+            persons.ForEach(p => context.Persons.Add(p));
             context.SaveChanges();
 
             var address = new List<Address>()
             {
-                new Address { AddressId = 1, Line1 = "2011 Wilshire", City = "Los Angeles", PostalCode = "92001", Country = "USA" }
+                new Address { AddressID = 1, Line1 = "2011 Wilshire", City = "Los Angeles", PostalCode = "92001", Country = "USA" }
             };
 
             address.ForEach(a => context.Addresses.Add(a));

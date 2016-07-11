@@ -7,13 +7,13 @@ namespace ContactOrganizer.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialModel : IMigrationMetadata
+    public sealed partial class AddForeignKeyInImageAndAddressTable : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialModel));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(AddForeignKeyInImageAndAddressTable));
         
         string IMigrationMetadata.Id
         {
-            get { return "201607102207078_InitialModel"; }
+            get { return "201607110358217_AddForeignKeyInImageAndAddressTable"; }
         }
         
         string IMigrationMetadata.Source

@@ -10,6 +10,15 @@
     <h4>Person</h4>
     <hr />
     <dl class="dl-horizontal">
+        @if (Model.ProfileImage.Any(p => p.FileType == ContactOrganizer.Entities.FileType.Photo))
+        {
+            <dt>
+                Profile Image
+            </dt>
+            <dd>
+                <img src="~/Image?id=@Model.ProfileImage.First(p => p.FileType == ContactOrganizer.Entities.FileType.Photo).ImageID" alt="image" />
+            </dd>
+        }
         <dt>
             @Html.DisplayNameFor(model => model.FirstName)
         </dt>

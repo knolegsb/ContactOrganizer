@@ -171,6 +171,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ContactController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ImageController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\PeopleController.cs" />
     <Compile Include="Controllers\PersonInfoController.cs" />
@@ -184,9 +185,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201607102207078_InitialModel.cs" />
-    <Compile Include="Migrations\201607102207078_InitialModel.Designer.cs">
-      <DependentUpon>201607102207078_InitialModel.cs</DependentUpon>
+    <Compile Include="Migrations\201607110346005_Fixing.cs" />
+    <Compile Include="Migrations\201607110346005_Fixing.Designer.cs">
+      <DependentUpon>201607110346005_Fixing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201607110358217_AddForeignKeyInImageAndAddressTable.cs" />
+    <Compile Include="Migrations\201607110358217_AddForeignKeyInImageAndAddressTable.Designer.cs">
+      <DependentUpon>201607110358217_AddForeignKeyInImageAndAddressTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -264,6 +269,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Image\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -274,8 +280,11 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201607102207078_InitialModel.resx">
-      <DependentUpon>201607102207078_InitialModel.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201607110346005_Fixing.resx">
+      <DependentUpon>201607110346005_Fixing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607110358217_AddForeignKeyInImageAndAddressTable.resx">
+      <DependentUpon>201607110358217_AddForeignKeyInImageAndAddressTable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

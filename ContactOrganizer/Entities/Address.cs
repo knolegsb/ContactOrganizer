@@ -7,7 +7,7 @@ namespace ContactOrganizer.Entities
 {
     public class Address
     {
-        public int AddressId { get; set; }
+        public int AddressID { get; set; }
         public string Line1 { get; set; }
         public string Line2 { get; set; }
         public string City { get; set; }
@@ -15,6 +15,7 @@ namespace ContactOrganizer.Entities
         public string PostalCode { get; set; }
         public string Country { get; set; }
 
-        //public virtual Person Person { get; set; }
+        public int PersonID { get; set; }
+        public virtual Person Person { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace ContactOrganizer.DAL
 
         }
 
-        public DbSet<Person> People { get; set; }
+        public DbSet<Person> Persons { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Image> Images { get; set; }
 

@@ -15,7 +15,7 @@ namespace ContactOrganizer.Controllers
 
         public ActionResult ShowPerson()
         {
-            var person = db.People.ToList();
+            var person = db.Persons.ToList();
 
             return View(person);
         }

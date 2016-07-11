@@ -22,7 +22,9 @@ namespace ContactOrganizer.Entities
 
         public FileType FileType { get; set; }
 
-        //public virtual Person Person { get; set; }
+
+        public int PersonID { get; set; }
+        public virtual Person Person { get; set; }
 
         //public List<string> ImageList { get; set; }
 

@@ -1,0 +1,111 @@
+﻿@model ContactOrganizer.Entities.ContactModel.Contact
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Contact</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @if (Model.Files.Any(f => f.FileType == BonContact.Web.Entities.FileType.Photo))
+        {
+            <dt>
+                Image
+            </dt>
+            <dd>
+                <img class="img-thumbnail" src="~/File?id=@Model.Files.First(f => f.FileType == BonContact.Web.Entities.FileType.Photo).FileID" alt="image" height="280" width="280" />
+            </dd>
+        }
+        else
+        {
+            <dt>
+                Image
+            </dt>
+            <dd>
+                <img src="~/Images/no-thumb.jpg" alt="image" />
+            </dd>
+        }
+        <dt>
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DateAdded)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateAdded)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Interests)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Interests)
+        </dd>
+
+        <hr />
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.First(a => a.ContactID == Model.ID).Line1)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.First(a => a.ContactID == Model.ID).Line1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.First(a => a.ContactID == Model.ID).Line2)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.First(a => a.ContactID == Model.ID).Line2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.First(a => a.ContactID == Model.ID).City)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.First(a => a.ContactID == Model.ID).City)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.First(a => a.ContactID == Model.ID).State)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.First(a => a.ContactID == Model.ID).State)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.First(a => a.ContactID == Model.ID).ZipCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.First(a => a.ContactID == Model.ID).ZipCode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address.First(a => a.ContactID == Model.ID).Country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address.First(a => a.ContactID == Model.ID).Country)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

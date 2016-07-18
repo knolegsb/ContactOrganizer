@@ -1,9 +1,13 @@
-﻿using ContactOrganizer.DAL;
+﻿using ContactOrganizer.Abstract;
+using ContactOrganizer.DAL;
 using ContactOrganizer.Entities;
 using ContactOrganizer.Models;
+using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
@@ -11,59 +15,218 @@ namespace ContactOrganizer.Controllers
 {
     public class ContactController : Controller
     {
-        private ContactDbContext db = new ContactDbContext();
+        private IContactRepository _repo;
 
-        public ActionResult ShowPerson()
+        public ContactController(IContactRepository repo)
         {
-            var person = db.Persons.ToList();
-
-            return View(person);
+            this._repo = repo;
         }
-        // GET: Contact
-        //public ViewResult Index()
-        //{
-        //    IEnumerable<Person> person = db.Persons.Select(pai => new Person()
-        //    {
-        //        PersonID = pai.PersonID,
-        //        FirstName = pai.FirstName,
-        //        LastName = pai.LastName,
-        //        BirthDate = pai.BirthDate,
-        //        DateAdded = pai.DateAdded,
-        //        Interests = pai.Interests,
-        //        //pai.ProfileImage.Title,
-        //        //pai.ProfileImage.FileName,
-        //        //pai.ProfileImage.Description,
-        //        //pai.ProfileImage.ImageType,
-        //        //pai.ProfileImage.ImageData,
-        //        //pai.ProfileImage.ImagePath,
-        //        //pai.HomeAddress.Line1,
-        //        //pai.HomeAddress.Line2,
-        //        //pai.HomeAddress.City,
-        //        //pai.HomeAddress.PostalCode,
-        //        //pai.HomeAddress.Country
-        //    });
 
-        //    IEnumerable<PersonInfoViewModel> persons = person.Select(p => new PersonInfoViewModel()
-        //    {
-        //        PersonID = p.PersonID,
-        //        FirstName = p.FirstName,
-        //        LastName = p.LastName,
-        //        BirthDate = p.BirthDate,
-        //        DateAdded = p.DateAdded,
-        //        Interests = p.Interests,
-        //        //ImageTitle = p.Title,
-        //        //ImageFileName = p.FileName,
-        //        //ImageDescription = p.Description,
-        //        //ImageType = p.ImageType,
-        //        //ImageData = p.ImageData,
-        //        //ImagePath = p.ImagePath,
-        //        //Line1 = p.Line1,
-        //        //Line2 = p.Line2,
-        //        //City = p.City,
-        //        //PostalCode = p.PostalCode,
-        //        //Country = p.Country
-        //    });
-        //    return View(person);
-        //}
+        public ViewResult Index(string sortOrder, string currentFilter, string searchString, int? page)
+        {
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.NameSortParam = String.IsNullOrEmpty(sortOrder) ? "name_desc" : "";
+            ViewBag.DateSortParam = sortOrder == "Date" ? "date_desc" : "Date";
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            var contacts = _repo.GetAllContacts().Select(c => c)
+                                        .Where(c => string.IsNullOrEmpty(searchString)
+                                                    || c.FirstName.Contains(searchString)
+                                                    || c.LastName.Contains(searchString));
+
+            switch (sortOrder)
+            {
+                case "name_desc":
+                    contacts = contacts.OrderByDescending(c => c.LastName);
+                    break;
+                case "Date":
+                    contacts = contacts.OrderBy(c => c.DateAdded);
+                    break;
+                case "date_desc":
+                    contacts = contacts.OrderByDescending(c => c.DateAdded);
+                    break;
+                default:
+                    contacts = contacts.OrderBy(c => c.LastName);
+                    break;
+            }
+
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            return View(contacts.ToPagedList(pageNumber, pageSize));
+        }
+
+        // GET: Contact/Details/5
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var contact = _repo.GetContact(id);
+            if (contact == null)
+            {
+                return HttpNotFound();
+            }
+
+            return View(contact);
+        }
+
+        // GET: Contact/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        // POST: Contact/Create
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "ID,LastName,FirstName,DateAdded,Interests, Address")] Contact contact, HttpPostedFileBase upload, Address address)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (upload != null && upload.ContentLength > 0)
+                    {
+                        var newImage = new File
+                        {
+                            FileName = System.IO.Path.GetFileName(upload.FileName),
+                            FileType = FileType.Photo,
+                            ContentType = upload.ContentType
+                        };
+                        using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                        {
+                            newImage.Content = reader.ReadBytes(upload.ContentLength);
+                        }
+                        contact.Files = new List<File> { newImage };
+                    }
+
+                    if (address != null)
+                    {
+                        var newAddress = new Address
+                        {
+                            Line1 = address.Line1,
+                            Line2 = address.Line2,
+                            City = address.City,
+                            State = address.State,
+                            ZipCode = address.ZipCode,
+                            Country = address.Country
+                        };
+
+                        contact.Address = new List<Address> { newAddress };
+                    }
+
+                    _repo.AddContact(contact);
+                    _repo.DbSaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (RetryLimitExceededException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+            }
+            return View(contact);
+        }
+
+        // GET: Contact/Edit/5
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            Contact contact = _repo.GetContactWithFiles(id);
+            if (contact == null)
+            {
+                return HttpNotFound();
+            }
+            return View(contact);
+        }
+
+        // POST: Contact/Edit/5
+        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
+        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int? id, HttpPostedFileBase upload)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var contactToUpdate = _repo.GetContact(id);
+            if (TryUpdateModel(contactToUpdate, "", new string[] { "LastName", "FirstName", "DateAdded" }))
+            {
+                try
+                {
+                    _repo.ImageUpdate(id, upload);
+
+                    return RedirectToAction("Index");
+                }
+                catch (RetryLimitExceededException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                }
+            }
+            return View(contactToUpdate);
+        }
+
+        // GET: Contact/Delete/5
+        public ActionResult Delete(int? id, bool? saveChangesError = false)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            if (saveChangesError.GetValueOrDefault())
+            {
+                ViewBag.ErrorMessage = "Delete failed. Try again, and if the problem persists see your system administrator.";
+            }
+            Contact contact = _repo.GetContact(id);
+            if (contact == null)
+            {
+                return HttpNotFound();
+            }
+            return View(contact);
+        }
+
+        // POST: Contact/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            try
+            {
+                _repo.RemoveContact(id);
+            }
+            catch (RetryLimitExceededException)
+            {
+                return RedirectToAction("Delete", new { id = id, saveChangesError = true });
+            }
+
+            return RedirectToAction("Index");
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _repo.DbDispose();
+            }
+            base.Dispose(disposing);
+        }
     }
 }
